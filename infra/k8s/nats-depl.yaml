@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats-depl
+  namespace: default
+  labels:
+    app: nats-depl
+spec:
+  selector:
+    matchLabels:
+      app: nats
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      # initContainers:
+      # Init containers are exactly like regular containers, except:
+      # - Init containers always run to completion.
+      # - Each init container must complete successfully before the next one starts.
+      containers:
+        - name: nats
+          image: nats-streaming:0.17.0
+          args:
+            [
+              "-p",
+              "4222",
+              "-m",
+              "8222",
+              "-hbi",
+              "5s",
+              "-hbt",
+              "5s",
+              "-hbf",
+              "2",
+              "-SD",
+              "-cid",
+              "ticketing",
+            ]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-srv
+  namespace: default
+spec:
+  selector:
+    app: nats
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: client
+      protocol: TCP
+      port: 8222
+      targetPort: 8222
+    - name: monitoring
+      protocol: TCP
+      port: 4222
+      targetPort: 4222
+      # If you set the `spec.type` field to `NodePort` and you want a specific port number,
+      # you can specify a value in the `spec.ports[*].nodePort` field.
+      # nodePort:

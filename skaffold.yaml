@@ -15,3 +15,43 @@ build:
         manual:
           - dest: .
             src: src/**/*.ts
+    - image: amrit1/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "**/*.tsx"
+    - image: amrit1/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
+    - image: amrit1/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
+    - image: amrit1/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
+    - image: amrit1/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts

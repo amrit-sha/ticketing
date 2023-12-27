@@ -15,23 +15,35 @@ interface IUserDoc extends mongoose.Document {
   password: string;
 }
 
-const schema = new mongoose.Schema<IUser>({
-  email: {
-    type: String,
-    required: true,
+const schema = new mongoose.Schema<IUser>(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret._v;
+      },
+    },
+  }
+);
 
 schema.statics.build = (attrs: IUser) => {
   return new User(attrs);
 };
 schema.pre("save", async function (cb) {
   if (this.isModified("password")) {
-    const hashed = await new Password().toHash(this.get("password"));
+    const hashed = await Password.toHash(this.get("password"));
     this.set("password", hashed);
   }
 
