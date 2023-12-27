@@ -12,7 +12,7 @@ it("gives details of currentuser", async () => {
   let res = await request(app)
     .get("/api/users/currentuser")
     .set("Cookie", cookie)
-    .expect(500);
+    .expect(200);
   expect(res.body.currentUser.email).toEqual("amrit@gmail.com");
 });
 it("gives null as currentuser if not logged in", async () => {
