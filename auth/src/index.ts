@@ -1,6 +1,7 @@
 import app from "./app";
 import mongoose from "mongoose";
 const start = async () => {
+  // asdlfkj
   if (!process.env.JWT_SECRET) {
     throw new Error("jwt key must be defined");
   }
