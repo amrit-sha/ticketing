@@ -2,7 +2,7 @@ import express from "express";
 import { currentUser } from "@amritorg/common";
 
 const router = express.Router();
-
+//sdf
 router.get("/api/users/currentuser", currentUser, (req, res) => {
   res.send({ currentUser: req.currentUser || null });
 });
