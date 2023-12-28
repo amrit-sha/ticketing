@@ -34,7 +34,7 @@ router.post(
     const token = jwt.sign(
       { id: existingUser._id, email: existingUser.email },
       process.env.JWT_SECRET!
-      // { expiresIn:  }
+      // { expiresIn: }
     );
 
     req.session = {
